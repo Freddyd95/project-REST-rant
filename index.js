@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 
-// Express Settingsrs
+// Express Settings
 app.set('view engine', 'jsx')
 app.engine('jsx', require('express-react-views').createEngine())
 app.use(express.static('public'))
@@ -16,6 +16,10 @@ app.get('/', (req, res) => {
 
 app.get('*', (req, res) => {
     res.status(404) .send('<h1>404 Page</h1>')
+})
+
+app.get('*', (req, res) => {
+    res.render('error404')
 })
 
 // Listen for Connections
