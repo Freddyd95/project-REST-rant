@@ -15,6 +15,10 @@ router.get('/', (req, res) => {
     res.send('GET /places')
 })
 
+router.get('/:id', (req, res) => {
+    res.sender('places/show')
+})
+
 router.post('/', (req, res) => {
     console.log(req.body)
     if (!req.body.pic) {
@@ -32,7 +36,7 @@ router.post('/', (req, res) => {
     res.send('POST/places')
 })
 
-router.get('/:id/edit', (req, res) => {
+router.put('/:id', (req, res) => {
     let id = Number(req.params.id)
     if (isNaN(id)) {
         res.render('error404')
@@ -41,9 +45,21 @@ router.get('/:id/edit', (req, res) => {
         res.render('error404')
     }
     else {
-        res.render('places/edit', { place: places[id] })
-    }
-    res.render('places/edit')
+        //Dig into req.body and make sure data is valid
+        if(!req.body.pic) {
+            req.body.pic='http://placekitten.com/400/400'
+        }
+        if(!req.body.city) {
+            req.body.city='Anytown'
+        }
+        if(!req.body.state) {
+            req.body.state='USA'
+        }
+    } 
+    
+        places[id] = req.body
+        res.redirect(`/places/${id}`)
+    
 })
 
 module.exports = router 
