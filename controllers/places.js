@@ -1,5 +1,28 @@
 const router = require('express').Router()
+const db = require('../models')
 const places = require('../models/places.js')
+
+router.get('/', (req, res) => {
+    db.Place.findById(req.params.id)
+    .then(place => {
+        res.render('places/show', { place })
+    })
+    .catch(err => {
+        console.log(err)
+        res.render('error404')
+    })
+})
+
+router.post ('/', (req, res) => {
+    db.Place.create(req.body)
+    .then(() => {
+        res.redirect('/places')
+    })
+    .catch(err => {
+        console.log('err', err)
+        res.render('error404')
+    })
+})
 
 
 //GET /places
@@ -12,7 +35,7 @@ router.get('/new', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-    res.send('GET /places')
+    res.send('GET /places stub')
 })
 
 router.get('/:id/edit', (req, res) => {
@@ -55,7 +78,7 @@ router.post('/', (req, res) => {
     }
     places.push(req.body)
     places.redirect('/places')
-    res.send('POST/places')
+    res.send('POST/places stub')
 })
 
 router.put('/:id', (req, res) => {
