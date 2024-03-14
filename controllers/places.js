@@ -24,7 +24,7 @@ router.get('/:id', (req, res) => {
         res.render('error404')
     }
     else {
-    res.render('places/show', { place: places[id] })
+    res.render('places/show', { place: places[id], id })
     }
 })
 
@@ -69,6 +69,20 @@ router.put('/:id', (req, res) => {
         places[id] = req.body
         res.redirect(`/places/${id}`)
     
+})
+
+router.delete('/:id', (req, res) => {
+    let id = Number(req.params.id)
+    if (isNan(id)) {
+        res.render('error404')
+    }
+    else if (!places[id]) {
+        res.render('error404')
+    }
+    else {
+        places.splice(id, 1)
+        res.redirect('/places')
+    }
 })
 
 module.exports = router 
