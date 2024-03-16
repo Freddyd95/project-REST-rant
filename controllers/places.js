@@ -19,6 +19,16 @@ router.post ('/', (req, res) => {
         res.redirect('/places')
     })
     .catch(err => {
+        if (err && err.name == 'ValidationError') {
+            let message = 'Validation Error: '
+
+            //Todo: Find all validation errors
+
+            res.render('places/new', { messsage })
+        }
+        else {
+            res.render('error404')
+        }
         console.log('err', err)
         res.render('error404')
     })
@@ -91,9 +101,7 @@ router.put('/:id', (req, res) => {
     }
     else {
         //Dig into req.body and make sure data is valid
-        if(!req.body.pic) {
-            req.body.pic='http://placekitten.com/400/400'
-        }
+       
         if(!req.body.city) {
             req.body.city='Anytown'
         }
